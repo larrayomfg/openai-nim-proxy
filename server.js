@@ -20,15 +20,16 @@ const SHOW_REASONING = false; // Set to true to show reasoning with <think> tags
 // 🔥 THINKING MODE TOGGLE - Enables thinking for specific models that support it
 const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwargs thinking parameter
 
-// Model mapping (adjust based on available NIM models)
+// Model mapping (only 3 unique free-endpoint models confirmed live on this account,
+// so some names below intentionally share the same underlying model)
 const MODEL_MAPPING = {
-  'gpt-3.5-turbo': 'meta/llma-3.1-8b-instruct',
-  'gpt-4': 'moonshotai/kimi-k2-instruct-0905',
-  'gpt-4-turbo': 'moonshotai/kimi-k2-instruct-0905',
-  'gpt-4o': 'deepseek-ai/deepseek-v3.1-terminus',
+  'gpt-3.5-turbo': 'moonshotai/kimi-k3',
+  'gpt-4': 'deepseek-ai/deepseek-v4-flash-0731',
+  'gpt-4-turbo': 'deepseek-ai/deepseek-v4-flash-0731',
+  'gpt-4o': 'deepseek-ai/deepseek-v4-pro-0813',
   'claude-3-opus': 'deepseek-ai/deepseek-v4-pro-0813',
-  'claude-3-sonnet': 'z-ai/glm-5.2',
-  'gemini-pro': 'meta/llma-3.1-70b-instruct' 
+  'claude-3-sonnet': 'moonshotai/kimi-k3',
+  'gemini-pro': 'deepseek-ai/deepseek-v4-flash-0731'
 };
 
 // Health check endpoint
@@ -79,15 +80,10 @@ app.post('/v1/chat/completions', async (req, res) => {
         });
       } catch (e) {}
       
+      // last-resort fallback: use one of the 3 models confirmed live on this
+      // account instead of guessing at old llama ids that may be retired
       if (!nimModel) {
-        const modelLower = model.toLowerCase();
-        if (modelLower.includes('gpt-4') || modelLower.includes('claude-opus') || modelLower.includes('405b')) {
-          nimModel = 'meta/llama-3.1-405b-instruct';
-        } else if (modelLower.includes('claude') || modelLower.includes('gemini') || modelLower.includes('70b')) {
-          nimModel = 'meta/llama-3.1-70b-instruct';
-        } else {
-          nimModel = 'meta/llama-3.1-8b-instruct';
-        }
+        nimModel = 'deepseek-ai/deepseek-v4-flash-0731';
       }
     }
     
