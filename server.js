@@ -83,7 +83,7 @@ app.post('/v1/chat/completions', async (req, res) => {
       // last-resort fallback: use one of the 3 models confirmed live on this
       // account instead of guessing at old llama ids that may be retired
       if (!nimModel) {
-        nimModel = 'deepseek-ai/deepseek-v4-flash-0731';
+        nimModel = 'z-ai/glm-5-3-flash';
       }
     }
     
