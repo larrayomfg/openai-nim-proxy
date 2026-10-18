@@ -10,6 +10,12 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json({limit: '25mb'}));
 
+// Simple request logger to debug SillyTavern paths
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.url}`);
+  next();
+});
+
 // NVIDIA NIM API configuration
 const NIM_API_BASE = process.env.NIM_API_BASE || 'https://integrate.api.nvidia.com/v1';
 const NIM_API_KEY = process.env.NIM_API_KEY;
@@ -20,8 +26,7 @@ const SHOW_REASONING = false; // Set to true to show reasoning with <think> tags
 // 🔥 THINKING MODE TOGGLE - Enables thinking for specific models that support it
 const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwargs thinking parameter
 
-// Model mapping (only 3 unique free-endpoint models confirmed live on this account,
-// so some names below intentionally share the same underlying model)
+// Model mapping
 const MODEL_MAPPING = {
   'glm-5-3-flash': 'z-ai/glm-5-3-flash',
   'deepseek-v4.1-flash': 'deepseek-ai/deepseek-v4.1-flash',
@@ -42,8 +47,8 @@ app.get('/health', (req, res) => {
   });
 });
 
-// List models endpoint (OpenAI compatible)
-app.get('/v1/models', (req, res) => {
+// List models endpoints (OpenAI compatible - supports both variants for SillyTavern compatibility)
+const handleListModels = (req, res) => {
   const models = Object.keys(MODEL_MAPPING).map(model => ({
     id: model,
     object: 'model',
@@ -55,14 +60,16 @@ app.get('/v1/models', (req, res) => {
     object: 'list',
     data: models
   });
-});
+};
+
+app.get('/v1/models', handleListModels);
+app.get('/models', handleListModels); // Added fallback alias for SillyTavern
 
 // Chat completions endpoint (main proxy)
 app.post('/v1/chat/completions', async (req, res) => {
   try {
     const { model, messages, temperature, max_tokens, stream } = req.body;
     
-    // Smart model selection with fallback
     let nimModel = MODEL_MAPPING[model];
     if (!nimModel) {
       try {
@@ -80,14 +87,11 @@ app.post('/v1/chat/completions', async (req, res) => {
         });
       } catch (e) {}
       
-      // last-resort fallback: use one of the 3 models confirmed live on this
-      // account instead of guessing at old llama ids that may be retired
       if (!nimModel) {
         nimModel = 'z-ai/glm-5-3-flash';
       }
     }
     
-    // Transform OpenAI request to NIM format
     const nimRequest = {
       model: nimModel,
       messages: messages,
@@ -97,7 +101,6 @@ app.post('/v1/chat/completions', async (req, res) => {
       stream: stream || false
     };
     
-    // Make request to NVIDIA NIM API
     const response = await axios.post(`${NIM_API_BASE}/chat/completions`, nimRequest, {
       headers: {
         'Authorization': `Bearer ${NIM_API_KEY}`,
@@ -107,7 +110,6 @@ app.post('/v1/chat/completions', async (req, res) => {
     });
     
     if (stream) {
-      // Handle streaming response with reasoning
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
@@ -177,7 +179,6 @@ app.post('/v1/chat/completions', async (req, res) => {
         res.end();
       });
     } else {
-      // Transform NIM response to OpenAI format with reasoning
       const openaiResponse = {
         id: `chatcmpl-${Date.now()}`,
         object: 'chat.completion',
