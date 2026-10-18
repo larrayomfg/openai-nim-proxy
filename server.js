@@ -23,11 +23,11 @@ const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwarg
 // Model mapping (only 3 unique free-endpoint models confirmed live on this account,
 // so some names below intentionally share the same underlying model)
 const MODEL_MAPPING = {
-  'gpt-3.5-turbo': 'moonshotai/kimi-k3',
-  'gpt-4': 'deepseek-ai/deepseek-v4-flash-0731',
-  'gpt-4-turbo': 'deepseek-ai/deepseek-v4-flash-0731',
-  'gpt-4o': 'deepseek-ai/deepseek-v4-pro-0813',
-  'claude-3-opus': 'deepseek-ai/deepseek-v4-pro-0813',
+  'glm-5-3-flash': 'z-ai/glm-5-3-flash',
+  'deepseek-v4.1-flash': 'deepseek-ai/deepseek-v4.1-flash',
+  'nemotron-3.5-super-vl-120b-a12b': 'nvidia/nemotron-3.5-super-vl-120b-a12b',
+  'nemotron-3-nano-omni-30b-a3b-reasoning': 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning',
+  'nemotron-3-super-120b-a12b': 'nvidia/nemotron-3-super-120b-a12b',
   'claude-3-sonnet': 'moonshotai/kimi-k3',
   'gemini-pro': 'deepseek-ai/deepseek-v4-flash-0731'
 };
