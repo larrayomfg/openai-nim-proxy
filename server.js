@@ -34,7 +34,7 @@ const MODEL_MAPPING = {
   'nemotron-3-nano-omni-30b-a3b-reasoning': 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning',
   'nemotron-3-super-120b-a12b': 'nvidia/nemotron-3-super-120b-a12b',
   'claude-3-sonnet': 'moonshotai/kimi-k3',
-  'gemini-pro': 'deepseek-ai/deepseek-v4-flash-0731'
+  'glm-5-3': 'z-ai/glm-5-3'
 };
 
 // Health check endpoint
