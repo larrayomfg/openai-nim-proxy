@@ -35,6 +35,9 @@ const MODEL_MAPPING = {
   'nemotron-3-super-120b-a12b': 'nvidia/nemotron-3-super-120b-a12b',
   'ising-calibration-1.5-31b': 'nvidia/ising-calibration-1.5-31b',
   'minimax-m3.1-flash': 'minimaxai/minimax-m3.1-flash'
+  'gpt-oss-20b': 'openai/gpt-oss-20b'
+  'gemma-4-31b-it': 'google/gemma-4-31b-it'
+  'diffusiongemma-26b-a4b-it': 'google/diffusiongemma-26b-a4b-it'
 };
 
 // Health check endpoint
