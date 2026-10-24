@@ -33,8 +33,8 @@ const MODEL_MAPPING = {
   'nemotron-3.5-super-vl-120b-a12b': 'nvidia/nemotron-3.5-super-vl-120b-a12b',
   'nemotron-3-nano-omni-30b-a3b-reasoning': 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning',
   'nemotron-3-super-120b-a12b': 'nvidia/nemotron-3-super-120b-a12b',
-  'claude-3-sonnet': 'moonshotai/kimi-k3',
-  'glm-5-3': 'z-ai/glm-5-3'
+  'ising-calibration-1.5-31b': 'nvidia/ising-calibration-1.5-31b',
+  'minimax-m3.1-flash': 'minimaxai/minimax-m3.1-flash'
 };
 
 // Health check endpoint
