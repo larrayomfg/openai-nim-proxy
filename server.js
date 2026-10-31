@@ -28,7 +28,8 @@ const ENABLE_THINKING_MODE = false; // Set to true to enable chat_template_kwarg
 
 // Model mapping
 const MODEL_MAPPING = {
-  'glm-5-3-flash': 'z-ai/glm-5-3-flash',
+  'Mistral Large 4':  'mistralai/Mistral Large 4',
+  'mistral-large-4-1t-a52b': 'mistralai/mistral-large-4-1t-a52b',
   'deepseek-v4.1-flash': 'deepseek-ai/deepseek-v4.1-flash',
   'nemotron-3.5-super-vl-120b-a12b': 'nvidia/nemotron-3.5-super-vl-120b-a12b',
   'nemotron-3-nano-omni-30b-a3b-reasoning': 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning',
